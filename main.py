@@ -6,11 +6,19 @@ import random
 import logging
 import os
 import pypokedex
+from keep_alive import keep_alive
+
 from calculator.simple import SimpleCalculator
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix='!',intents=intents)
 c = SimpleCalculator()
+
+def get_quote():
+  response = requests.get("https://zenquotes.io/api/random")
+  json_data = json.loads(response.text)
+  quote = json_data[0]['q'] + "\n- " + json_data[0]['a'] 
+  return (quote)
 
 #check if the bot has logged on to the discord server
 @client.event
@@ -90,7 +98,7 @@ async def ping(ctx):
 async def calc(ctx,*,arg):
   c.run(arg)
   await ctx.send('The Answer is {}'.format(c.lcd))
-
+#This command is used to flip a coin whether it being heads or tails
 @client.command()
 async def coin(ctx):
   randomvar = random.randint(1,2)
@@ -98,11 +106,14 @@ async def coin(ctx):
     await ctx.send('Heads!',file = discord.File('heads.png'))
   else:
     await ctx.send('Tails!',file=discord.File('tails.png'))
-
+#this comamand is used to clear messages depending on the number entered 
 @client.command()
-async def clear(ctx):
-  await ctx.channel.purge(limit=1000)
-
+async def clear(ctx,arg):
+  if(arg=='all'):
+    await ctx.channel.purge(limit=10000000000)
+  else:
+    await ctx.channel.purge(limit = int(arg))  
+#This command will take the poke api and call it which will display the info about a certain pokemon
 @client.command()
 async def poke(ctx,arg):
   nameDex = arg
@@ -122,7 +133,7 @@ async def poke(ctx,arg):
   embed.add_field(name='Abilites',value = '\n'.join(map(str, poke.abilities)),inline = True)
   embed.add_field(name='Base Stats',value = str(poke.base_stats)[10:-1],inline = False)
   await ctx.send(embed = embed)
-  
+#This command is used to show the list of commands to the user
 @client.command()
 async def commands(ctx):
   embed = discord.Embed(title = '!command ',description = 'List of commands',color = 0x7289da)
@@ -133,12 +144,29 @@ async def commands(ctx):
   embed.add_field(name='!coin',value = 'Flips a coin either landing on heads or tails',inline = False)
   embed.add_field(name='!poke<pokemon <name> or <dex>',value = 'Shows the stats of a speciifc pokemon',inline = False)
   await ctx.send(embed = embed)
-
+#this command is used to kick members
 @client.command()
 async def kick(ctx,member : discord.Member,*,reason = 'none'):
   await member.kick(reason = reason)
-
+#this command is used to ban members
 @client.command()
 async def ban(ctx,member : discord.Member,*,reason = 'none'):
    await member.ban(reason = reason)
+
+@client.command()
+async def quote(ctx):
+  quote = get_quote()
+  await ctx.send(quote);
+
+@client.command()
+async def assignrole(ctx, user: discord.Member, role: discord.Role):
+  await user.add_roles(role)
+  await ctx.send(f"hey {user.name} has been giving a role called: {role.name}")
+
+@client.command()
+async def removerole(ctx, user: discord.Member, role: discord.Role):
+  await user.remove_roles(role)
+  await ctx.send(f"{user.name} has been removed a role called: {role.name}")
+
+keep_alive()
 client.run(os.getenv('TOKEN'))
