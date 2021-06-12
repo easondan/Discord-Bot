@@ -108,6 +108,7 @@ async def coin(ctx):
     await ctx.send('Tails!',file=discord.File('tails.png'))
 #this comamand is used to clear messages depending on the number entered 
 @client.command()
+
 async def clear(ctx,arg):
   if(arg=='all'):
     await ctx.channel.purge(limit=10000000000)
@@ -145,11 +146,14 @@ async def commands(ctx):
   embed.add_field(name='!poke<pokemon <name> or <dex>',value = 'Shows the stats of a speciifc pokemon',inline = False)
   await ctx.send(embed = embed)
 #this command is used to kick members
+
 @client.command()
+
 async def kick(ctx,member : discord.Member,*,reason = 'none'):
   await member.kick(reason = reason)
 #this command is used to ban members
 @client.command()
+
 async def ban(ctx,member : discord.Member,*,reason = 'none'):
    await member.ban(reason = reason)
 
@@ -167,6 +171,24 @@ async def assignrole(ctx, user: discord.Member, role: discord.Role):
 async def removerole(ctx, user: discord.Member, role: discord.Role):
   await user.remove_roles(role)
   await ctx.send(f"{user.name} has been removed a role called: {role.name}")
+
+
+@client.event
+async def on_raw_reaction_add(payload):
+  ourMessageID = 853157277263724554
+  if ourMessageID == payload.message_id:
+    member= payload.member
+    guild = member.guild
+    emoji = payload.emoji.name
+    if emoji== "👍":
+      role = discord.utils.get(guild.roles,name ="tos")
+      await member.add_roles(role)
+
+# @client.event
+# async def on_raw_reaction_remove(payload):
+
+
+
 
 
 keep_alive()
