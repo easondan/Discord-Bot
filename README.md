@@ -2,8 +2,10 @@
 
 ## Description
 
-A Discord bot that can run basic commands such as logging messages,calculate basic math,kick,ban users, as well give and remove roles from others,get information from the pokemon API and displays it, as well as to be able to flip a coin,and it can clear messages in discord
-
+Bot is able to log messages whether messages are edited or deleted on discord
+![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/history.png)
+![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/delete.png)
+![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/edit.png)
 ## Getting Started
 
 ### Dependencies
