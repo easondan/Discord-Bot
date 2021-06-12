@@ -10,10 +10,6 @@ A Discord bot that can run basic commands such as logging messages,calculate bas
 
 Mac OS,Windows10,Linux
 
-### Installing
-
-Just install on the reqired imports in the program no need to install anything else
-
 ## Authors
 
 Eason Liang
