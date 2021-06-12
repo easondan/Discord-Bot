@@ -32,12 +32,6 @@ Bot is able to get a quote from using https://zenquotes.io/
 ![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/quote.png)
 
 
-## Getting Started
-
-### Dependencies
-
-Mac OS,Windows10,Linux
-
 ## Authors
 
 Eason Liang
