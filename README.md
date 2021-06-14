@@ -1,7 +1,7 @@
 # Discord Bot
 
 ## Description
-A discord bot that can do various things such as moderation such as kicking,banning,telling user who leaves and joins the server and as well admins can assign roles to users if needed 
+A discord bot that can do various things such as moderation such as kicking,banning,telling user who leaves and joins the server and as well bot/admins can assign roles to users if needed 
 
 Bot commands:
 
