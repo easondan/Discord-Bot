@@ -18,7 +18,7 @@ Bot is able to do basic math calculations such as adding dividing and subtractin
 ![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/calc.png)
 
 Bot is able to call a pokemon api and using a wrapper which will get the specific information about a certain pokemon from https://pokeapi.co/
-and using the wrapper called pypokedex
+and using the wrapper called pypokedex(https://pypi.org/project/pypokedex/)
 
 ![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/poke.png)
 
