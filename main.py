@@ -7,8 +7,9 @@ import logging
 import os
 import pypokedex
 from keep_alive import keep_alive
-
 from calculator.simple import SimpleCalculator
+
+
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix='!',intents=intents)
@@ -23,7 +24,6 @@ def get_quote():
 #check if the bot has logged on to the discord server
 @client.event
 async def on_ready():
- 
   await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Anime"))
   print('logged in as')
   print(client.user.name)
@@ -78,17 +78,75 @@ async def on_message_edit(before, after):
   channel2 = client.get_channel(848108844411519006)
   await channel2.send('Edit {} : Before: "{}" After: {} : {}'.format(author,content,content2,channel))
 
+@client.event
+async def on_raw_reaction_add(payload):
+  ourMessageID = 853157277263724554
+  if ourMessageID == payload.message_id:
+    member= payload.member
+    guild = member.guild
+    emoji = payload.emoji.name
+    if emoji== "👍":
+      role = discord.utils.get(guild.roles,name ="tos")
+      await member.add_roles(role)
+      
+
+
+
+
+
+
+
+
+
 
 @client.command()
-async def test(ctx, arg):
-  await ctx.send("HI")
-# This command is used to access and search for a twtich user so as long as they exist 
+@commands.cooldown(1,15,commands.BucketType.channel)
+async def google(ctx,*,arg):
+  from googlesearch import search
+  embed = discord.Embed(title = 'Search Results ',description = 'List of Search Results',color = 0x7289da)
+  for j in search(arg, tld="co.in", num=10, stop=10, pause=2):
+      embed.add_field(name='Result',value = j,inline = False)
+  await ctx.send(embed = embed)
+
+
 @client.command()
-async def twitch(ctx,arg):
-  await ctx.send(embed=discord.Embed(title=arg, url="https://www.twitch.tv/"+arg, description=arg, color=0x800080))
+@commands.has_any_role("ADMIN")
+async def clear(ctx,arg):
+  if(arg=='all'):
+    await ctx.channel.purge(limit=10000000000)
+  else:
+    await ctx.channel.purge(limit = int(arg))  
 
 
+@client.command()
+@commands.has_any_role("ADMIN")
+async def kick(ctx,member : discord.Member,*,reason = 'none'):
+  await member.kick(reason = reason)
+
+
+@client.command()
+@commands.has_any_role("ADMIN")
+async def ban(ctx,member : discord.Member,*,reason = 'none'):
+   await member.ban(reason = reason)
+
+@client.command()
+@commands.has_any_role("ADMIN")
+async def assignrole(ctx, user: discord.Member, role: discord.Role):
+  await user.add_roles(role)
+  await ctx.send(f"hey {user.name} has been giving a role called: {role.name}")
+
+@client.command()
+@commands.has_any_role("ADMIN")
+async def removerole(ctx, user: discord.Member, role: discord.Role):
+  await user.remove_roles(role)
+  await ctx.send(f"{user.name} has been removed a role called: {role.name}")
 #This command is used to get the ping of a user 
+
+
+
+
+
+
 @client.command()
 async def ping(ctx):
   await ctx.send(f'Pong! In {round(client.latency * 1000)}ms')
@@ -107,13 +165,7 @@ async def coin(ctx):
   else:
     await ctx.send('Tails!',file=discord.File('tails.png'))
 #this comamand is used to clear messages depending on the number entered 
-@client.command()
 
-async def clear(ctx,arg):
-  if(arg=='all'):
-    await ctx.channel.purge(limit=10000000000)
-  else:
-    await ctx.channel.purge(limit = int(arg))  
 #This command will take the poke api and call it which will display the info about a certain pokemon
 @client.command()
 async def poke(ctx,arg):
@@ -121,7 +173,6 @@ async def poke(ctx,arg):
   poke = pypokedex.get(name = nameDex)
   title  = poke.name
   title2 = title.upper()
-  
   embed = discord.Embed(title = title2,description = 'Pokemon',color=0xffcb05)
   url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{poke.dex}.png"
   embed.set_image(url=url)
@@ -144,48 +195,22 @@ async def commands(ctx):
   embed.add_field(name='!clear',value = 'Clears the most recent 100 messages only avaliable to admins',inline = False)
   embed.add_field(name='!coin',value = 'Flips a coin either landing on heads or tails',inline = False)
   embed.add_field(name='!poke<pokemon <name> or <dex>',value = 'Shows the stats of a speciifc pokemon',inline = False)
+  embed.add_field(name='!google',value = 'google something and you top 10 results will come up',inline = False)
   await ctx.send(embed = embed)
 #this command is used to kick members
 
-@client.command()
 
-async def kick(ctx,member : discord.Member,*,reason = 'none'):
-  await member.kick(reason = reason)
-#this command is used to ban members
 @client.command()
-
-async def ban(ctx,member : discord.Member,*,reason = 'none'):
-   await member.ban(reason = reason)
+async def twitch(ctx,arg):
+  await ctx.send(embed=discord.Embed(title=arg, url="https://www.twitch.tv/"+arg, description=arg, color=0x800080))
 
 @client.command()
 async def quote(ctx):
   quote = get_quote()
   await ctx.send(quote);
 
-@client.command()
-async def assignrole(ctx, user: discord.Member, role: discord.Role):
-  await user.add_roles(role)
-  await ctx.send(f"hey {user.name} has been giving a role called: {role.name}")
-
-@client.command()
-async def removerole(ctx, user: discord.Member, role: discord.Role):
-  await user.remove_roles(role)
-  await ctx.send(f"{user.name} has been removed a role called: {role.name}")
 
 
-@client.event
-async def on_raw_reaction_add(payload):
-  ourMessageID = 853157277263724554
-  if ourMessageID == payload.message_id:
-    member= payload.member
-    guild = member.guild
-    emoji = payload.emoji.name
-    if emoji== "👍":
-      role = discord.utils.get(guild.roles,name ="tos")
-      await member.add_roles(role)
-
-# @client.event
-# async def on_raw_reaction_remove(payload):
 
 
 
