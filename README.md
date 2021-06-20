@@ -39,6 +39,6 @@ Bot is able to do google searches and will list the first 10 results
 
 Eason Liang
 
-##Future Plans
+#Future Plans
 
 Add cogs to separate the different functions 
