@@ -38,3 +38,7 @@ Bot is able to do google searches and will list the first 10 results
 ## Authors
 
 Eason Liang
+
+##Future Plans
+
+Add cogs to separate the different functions 
