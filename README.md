@@ -31,7 +31,7 @@ Bot is able to get a quote from using https://zenquotes.io/
 
 ![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/quote.png)
 
-Bot is able to do google searches and will list the first 10 results
+Bot is able to do google searches and will list the first 10 results uses beautifulsoup4 and google packages
 
 ![image](https://github.com/easondan/Discord-Bot/blob/main/Discord%20Bot/Screen%20Shot%202021-06-15%20at%209.04.57%20PM.png)
 
